@@ -53,8 +53,8 @@ def callcms(cur):
     try:
       response = session.get(returnurl(), params=prms(cur))
       data = json.loads(response.text)
-      with open(jsonfname(), "w") as temp_data:
-        temp_data.write(str(data))
+      # with open(jsonfname(), "w") as temp_data:
+      #   temp_data.write(str(data))
       return (data)
     except (ConnectionError, Timeout, TooManyRedirects) as e:
       print(e)

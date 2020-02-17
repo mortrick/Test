@@ -106,3 +106,7 @@ print(to_bin(127))
 
 # test(23)
 
+
+
+
+# CREATE ROLE cryptoapi WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'admin';

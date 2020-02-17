@@ -4,10 +4,6 @@ import connect as con
 dist = ["USD", "BTC"]
 
 
-
-
-
-
 for i in dist:
     cnf.load_cmc_data(i)
 
