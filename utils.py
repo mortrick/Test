@@ -4,7 +4,7 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 import connect as cn
 import mysqlactions as mysql
-
+import platform
 
 
 import twlsms as twl
@@ -104,11 +104,15 @@ def setobj(obj, conversiontype):
 
 
 def getsql(arr, conversion_type):
+    if platform.system() == 'Windows':
+        sql = "INSERT INTO mrr_test.fact_30_min_raw_data VALUES\n"
+    else:
+        sql = "INSERT INTO mrr.fact_30_min_raw_data VALUES\n"
     if conversion_type == 1:
         contype = "USD"
     else:
         contype = "BTC"
-    sql = "INSERT INTO mrr.fact_30_min_raw_data VALUES\n"
+
     islast_row = 0
     for dict in arr:
         islast_row += 1
