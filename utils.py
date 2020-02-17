@@ -2,7 +2,6 @@ import datetime as dt
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
-import connect as cn
 import mysqlactions as mysql
 import platform
 
