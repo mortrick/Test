@@ -1,7 +1,7 @@
 import utils as cnf
 import mysqlactions as mysql
 
-dist = ["USD", "BTC"]
+dist = ["USD"]
 
 
 for i in dist:
