@@ -8,8 +8,7 @@ grant all privileges on schema mrr  to cryptoapi;
 grant all privileges on schema stg  to cryptoapi;
 grant all privileges on schema dwh  to cryptoapi;
 grant all privileges on schema mng  to cryptoapi;
-grant all privileges on table dwh.tracked_crypto_projects  to cryptoapi;
-grant all privileges on table mrr.hourly_raw_data to cryptoapi;
+
 
 
 drop table if exists dwh.tracked_crypto_projects;
@@ -32,3 +31,7 @@ inserted_timestamp timestamp,
 query_str varchar(3500)
 
 )
+
+
+grant all privileges on table dwh.tracked_crypto_projects  to cryptoapi;
+grant all privileges on table mrr.hourly_raw_data to cryptoapi;

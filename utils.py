@@ -3,6 +3,10 @@ from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 import connect as cn
+import mysqlactions as mysql
+
+
+
 import twlsms as twl
 
 ### Authorized columns
@@ -52,7 +56,7 @@ def callcms(cur):
     session.headers.update(headers())
     try:
       response = session.get(returnurl(), params=prms(cur))
-      data = json.loads(response.text)
+      data = json.loads(response.texll)
       # with open(jsonfname(), "w") as temp_data:
       #   temp_data.write(str(data))
       return (data)
@@ -69,7 +73,7 @@ def callcms(cur):
 #     cols =["price", "volume_24h", "percent_change_1h", "percent_change_24h", "market_cap", "last_updated"]
 #     return cols
 
-def setobj(obj,conversiontype):
+def setobj(obj, conversiontype):
     if conversiontype ==1:
         rnd = 3
     else:
@@ -104,7 +108,7 @@ def getsql(arr, conversion_type):
         contype = "USD"
     else:
         contype = "BTC"
-    sql = "INSERT INTO mrr.hourly_raw_data VALUES\n"
+    sql = "INSERT INTO mrr.fact_30_min_raw_data VALUES\n"
     islast_row = 0
     for dict in arr:
         islast_row += 1
@@ -127,7 +131,6 @@ def getsql(arr, conversion_type):
                      ]
         txtvals = ",".join(insertvlues)
         rtoadd = insertrow + txtvals + ")"
-        print("The length of the array is: " + str(len(arr)) + " And is last row is :" + str(islast_row))
         if len(arr) != islast_row:
             rtoadd += ',\n'
         sql += rtoadd
@@ -165,8 +168,8 @@ def load_cmc_data(cur):
     crpdata = fulldata["data"]
     # Prepare the insert sql statement
     sql = getsql(crpdata, curid)
-    cn.connect(sql)
-    print(sql)
+    mysql.qryexec(sql)
+    print("Data successfully load to mysql")
 
 # Return only the sql to execute
 
@@ -176,6 +179,6 @@ def load_cmc_data(cur):
 # execmngsql(2, 0)
 # execmngsql(1, 0)
 
-test = execmngsql(3, 1)
-print(test)
+# test = execmngsql(3, 1)
+# print(test)
 
