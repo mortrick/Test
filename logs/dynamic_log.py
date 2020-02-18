@@ -22,6 +22,7 @@ def logpath(runid):
 # Get logfile and message
 
 def writelog(logfile, msg,dubugmode =0 ):
+    print("Writing logfile to " + logfile)
     if dubugmode == 0:
         return None
     if os.path.exists(logfile):
