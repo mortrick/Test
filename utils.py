@@ -27,7 +27,7 @@ def prms(cur):
     if cur ==1:
         parameters = {
           'start':'1',
-          'limit':'5000',
+          'limit':'10',
           'convert':'USD'
         }
         return parameters
@@ -133,6 +133,11 @@ def getsql(arr, conversion_type):
                        str(setobj(dict["quote"][contype]["last_updated"], conversion_type))
                      ]
         txtvals = ",".join(insertvlues)
+        # cntval = 0
+        # for str in insertvlues:
+        #     insertvlues += str
+        #     if cntval != len(insertvlues):
+        #         insertvlues += ','
         rtoadd = insertrow + txtvals + ")"
         if len(arr) != islast_row:
             rtoadd += ',\n'
@@ -141,22 +146,22 @@ def getsql(arr, conversion_type):
 
 
 
-def execmngsql(query_id, is_return=0):
-    sql = "select query_str from mng.environment_queries where query_id = " + str(query_id)
-    execsql = cn.connect(sql, 1)[0]
-    print("I Execute the query", execsql)
-    if is_return == 0:
-        cn.connect(execsql, is_return)
-        return(execsql)
-    else:
-        isdata = cn.connect(sql, is_return)[0]
-        data = cn.connect(isdata, is_return)[0]
-        if not data:
-            print("The query return no data")
-            return 0
-        else:
-            print("Here are the results for the query")
-            return data
+# def execmngsql(query_id, is_return=0):
+#     sql = "select query_str from mng.environment_queries where query_id = " + str(query_id)
+#     execsql = cn.connect(sql, 1)[0]
+#     print("I Execute the query", execsql)
+#     if is_return == 0:
+#         cn.connect(execsql, is_return)
+#         return(execsql)
+#     else:
+#         isdata = cn.connect(sql, is_return)[0]
+#         data = cn.connect(isdata, is_return)[0]
+#         if not data:
+#             print("The query return no data")
+#             return 0
+#         else:
+#             print("Here are the results for the query")
+#             return data
 
 def load_cmc_data(cur):
     # Download new data
