@@ -29,14 +29,14 @@ def prms(cur):
     if cur == 1:
         parameters = {
           'start': '1',
-          'limit': '50',
+          'limit': '5000',
           'convert': 'USD'
         }
         return parameters
     else:
         parameters = {
             'start': '1',
-            'limit': '50',
+            'limit': '5000',
             'convert': 'BTC'
         }
         return parameters
