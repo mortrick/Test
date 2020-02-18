@@ -14,7 +14,7 @@ def logpath(runid):
         path = logdir / filename
         return path
     else:
-        logdir = Path('/cryptoapi/Tracker/logs/')
+        logdir = Path('/home/ubuntu/cryptoapi/Tracker/logs')
         path = logdir / filename
         return path
 
