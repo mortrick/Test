@@ -31,6 +31,9 @@ def writelog(logfile, msg,dubugmode =0 ):
         f = open(logfile, 'w+')
         f.write(msg)
         f.close()
+        if platform.system() != 'Windows':
+            os.chmod(logfile, '0o777')
+
 
 
 
