@@ -118,7 +118,6 @@ def getsql(arr, conversion_type):
         contype = "USD"
     else:
         contype = "BTC"
-
     islast_row = 0
     for dict in arr:
         islast_row += 1
