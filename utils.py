@@ -5,7 +5,7 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 import mysqlactions as mysql
 import platform
-import logs as dl
+from logs import dynamic_log as dl
 
 
 import twlsms as twl
