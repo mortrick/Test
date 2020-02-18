@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-
 import datetime as dt
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 import mysqlactions as mysql
 import platform
+from logs import dynamic_log as dl
 
 
 import twlsms as twl
@@ -36,7 +36,7 @@ def prms(cur):
     else:
         parameters = {
             'start': '1',
-            'limit': '5000',
+            'limit': '50',
             'convert': 'BTC'
         }
         return parameters
@@ -52,7 +52,7 @@ def headers():
 
 
 
-def callcms(cur):
+def callcms(cur, run_id, debugmode):
     session = Session()
     session.headers.update(headers())
     try:
@@ -60,9 +60,11 @@ def callcms(cur):
       data = json.loads(response.text)
       # with open(jsonfname(), "w") as temp_data:
       #   temp_data.write(str(data))
+      dl.writelog(dl.logpath(run_id), "successfuly finished to retrieve data to the server, moving on to insert it to DB" + '\n', debugmode)
       return (data)
     except (ConnectionError, Timeout, TooManyRedirects) as e:
-      print(e)
+        dl.writelog(dl.logpath(run_id), "Somthing went wrong with cmc API." + '\n', debugmode)
+        print(e)
 
 
 # def dimscolumns():
@@ -109,7 +111,7 @@ def setobj(obj, conversiontype):
         return str("'" + obj.replace("'", "") + "'")
 
 
-def getsql(arr, conversion_type):
+def getsql(arr, conversion_type, debugmode, run_id):
     if platform.system() == 'Windows':
         sql = "INSERT INTO mrr_test.fact_30_min_raw_data VALUES\n"
     else:
@@ -149,6 +151,7 @@ def getsql(arr, conversion_type):
         if len(arr) != islast_row:
             rtoadd += ',\n'
         sql += rtoadd
+    dl.writelog(dl.logpath(run_id), "The sql prepared for insertion is :" + '\n' + sql +'\n', debugmode)
     return sql
 
 
@@ -170,23 +173,25 @@ def getsql(arr, conversion_type):
 #             print("Here are the results for the query")
 #             return data
 
-def load_cmc_data(cur, debugmode = 0):
+def load_cmc_data(cur, debugmode = 0,run_id = 0):
     # Download new data
     if cur == "USD":
         curid = 1
     else:
         curid = 2
-
-    fulldata = callcms(curid)
-
+    dl.writelog(dl.logpath(run_id), "\n Start fetching currencies " + cur + '\n', debugmode)
+    # Call cmc func take currency id and return data
+    fulldata = callcms(curid, run_id=run_id, debugmode=debugmode)
+    dl.writelog(dl.logpath(run_id), "\n Data fetched finished, prepareing the SQL" + '\n', debugmode)
     # Isolate only the relevant data
     crpdata = fulldata["data"]
     # Prepare the insert sql statement
-    sql = getsql(crpdata, curid)
-    if debugmode == 1:
-        print("SQL Start here : "+sql)
-    mysql.qryexec(sql)
-    print("Data successfully load to mysql")
+    sql = getsql(arr=crpdata, conversion_type= curid, run_id= run_id, debugmode=debugmode)
+    dl.writelog(dl.logpath(run_id), "\n Data fetched finished, prepareing the SQL" + '\n', debugmode)
+    # Execute the sql
+    mysql.qryexec(numb=sql, retval=0, run_id=run_id, debugmode=debugmode)
+    dl.writelog(dl.logpath(run_id), "\n Data successfully inserted to aurora"  , debugmode)
+
 
 # Return only the sql to execute
 
@@ -201,3 +206,14 @@ def load_cmc_data(cur, debugmode = 0):
 # txt = "2020-02-18T01:07:08.000Z"
 #
 # print(setobj(txt, 1))
+
+
+def getrunid_str():
+    date = dt.datetime.now()
+    year = str(date.year)
+    month = str(date.month)
+    day = str(date.day)
+    hr = str(date.hour)
+    mn = str(date.minute)
+    timestamp = year + month + day + hr + mn
+    return timestamp
