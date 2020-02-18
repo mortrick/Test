@@ -24,18 +24,18 @@ def returnurl():
     return url
 
 def prms(cur):
-    if cur ==1:
+    if cur == 1:
         parameters = {
-          'start':'1',
-          'limit':'10',
-          'convert':'USD'
+          'start': '1',
+          'limit': '5000',
+          'convert': 'USD'
         }
         return parameters
     else:
         parameters = {
-            'start' : '1',
-            'limit' : '5000',
-            'convert' : 'BTC'
+            'start': '1',
+            'limit': '5000',
+            'convert': 'BTC'
         }
         return parameters
 
@@ -163,7 +163,7 @@ def getsql(arr, conversion_type):
 #             print("Here are the results for the query")
 #             return data
 
-def load_cmc_data(cur):
+def load_cmc_data(cur, debugmode = 0):
     # Download new data
     if cur == "USD":
         curid = 1
@@ -176,6 +176,8 @@ def load_cmc_data(cur):
     crpdata = fulldata["data"]
     # Prepare the insert sql statement
     sql = getsql(crpdata, curid)
+    if debugmode ==1:
+        print(sql)
     mysql.qryexec(sql)
     print("Data successfully load to mysql")
 
