@@ -104,7 +104,7 @@ def setobj(obj, conversiontype):
         newobj = obj[0]
         return str("'" + newobj +"'")
     else:
-        return str(obj)
+        return str("'" + obj + "'")
 
 
 def getsql(arr, conversion_type):
@@ -118,7 +118,7 @@ def getsql(arr, conversion_type):
         contype = "BTC"
 
     islast_row = 0
-    for dict in arr :
+    for dict in arr:
         islast_row += 1
         insertrow = '('
         insertvlues = [str(setobj(dict["id"], conversion_type)),
