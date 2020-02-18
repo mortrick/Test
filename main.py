@@ -3,8 +3,10 @@
 import utils as cnf
 import mysqlactions as mysql
 import time
+from logs import dynamic_log
 
-dist = ["USD", "BTC"]
+dist = ["USD"]
+
 
 
 for i in dist:
