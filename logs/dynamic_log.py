@@ -28,7 +28,7 @@ def writelog(logfile, msg,dubugmode =0 ):
         with open(logfile, 'a') as f:
             f.write(msg)
     else:
-        f = open(logfile, 'w+')
+        f = open(logfile, 'w')
         f.write(msg)
         f.close()
         if platform.system() != 'Windows':
