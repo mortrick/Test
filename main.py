@@ -4,11 +4,11 @@ import utils as cnf
 import mysqlactions as mysql
 import time
 
-dist = ["USD"]
+dist = ["USD", "BTC"]
 
 
 for i in dist:
-    cnf.load_cmc_data(i, debugmode=1)
+    cnf.load_cmc_data(i, debugmode=0)
 time.sleep(5)
 
 mysql.qryexec(2) # Truncate the hourly percentage table
