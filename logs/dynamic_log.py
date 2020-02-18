@@ -33,7 +33,7 @@ def writelog(logfile, msg,dubugmode =0 ):
         f.write(msg)
         f.close()
         if platform.system() != 'Windows':
-            os.chmod(str(logfile), '0o777')
+            os.chmod(str(logfile), 777)
 
 
 
