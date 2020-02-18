@@ -27,7 +27,7 @@ def prms(cur):
     if cur == 1:
         parameters = {
           'start': '1',
-          'limit': '5000',
+          'limit': '50',
           'convert': 'USD'
         }
         return parameters
