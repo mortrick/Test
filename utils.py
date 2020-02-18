@@ -97,7 +97,7 @@ def setobj(obj, conversiontype):
                 newobjstr = str(newobj)[:19]
                 return str("'" + newobjstr.replace("'", "") + "'")
             else:
-                return str("'" + obj + "'")
+                return str("'" + obj.replace("'", "") + "'")
         else:
             return str("'" + obj.replace("'", "") + "'")
     elif type(obj) == list:
@@ -106,7 +106,7 @@ def setobj(obj, conversiontype):
         newobj = obj[0]
         return str("'" + newobj +"'")
     else:
-        return str("'" + obj + "'")
+        return str("'" + obj.replace("'", "") + "'")
 
 
 def getsql(arr, conversion_type):
