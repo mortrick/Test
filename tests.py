@@ -113,3 +113,15 @@ strange = 3.279999737232541e-05
 
 
 # CREATE ROLE cryptoapi WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'admin';
+
+
+
+
+txt = "2020-02-18T01:07:08.000Z"
+
+
+def check(str):
+    if str[10] == "T" and str[13] ==":":
+        print("Match")
+
+# check(txt)

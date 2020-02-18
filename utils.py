@@ -73,7 +73,7 @@ def callcms(cur):
 #     return cols
 
 def setobj(obj, conversiontype):
-    if conversiontype ==1:
+    if conversiontype == 1:
         rnd = 3
     else:
         rnd = 10
@@ -81,16 +81,21 @@ def setobj(obj, conversiontype):
         return str('null')
     if obj == 'None':
         return str('null')
+    if obj is None:
+        return str('null')
     elif type(obj) == int:
         return str(obj)
     elif type(obj) == float:
         newobj = round(obj, rnd)
-        return  newobj
+        return newobj
     elif type(obj) == str:
-        if "T" in obj and ":" in obj:
-            newobj = obj.replace("T", " ")
-            newobjstr = str(newobj)[:19]
-            return str("'" + newobjstr.replace("'", "") + "'")
+        if len(obj) >= 22:
+            if obj[10]=="T" and obj[13] == ":":
+                newobj = obj.replace("T", " ")
+                newobjstr = str(newobj)[:19]
+                return str("'" + newobjstr.replace("'", "") + "'")
+            else:
+                return str("'" + obj + "'")
         else:
             return str("'" + obj.replace("'", "") + "'")
     elif type(obj) == list:
@@ -113,7 +118,7 @@ def getsql(arr, conversion_type):
         contype = "BTC"
 
     islast_row = 0
-    for dict in arr:
+    for dict in arr :
         islast_row += 1
         insertrow = '('
         insertvlues = [str(setobj(dict["id"], conversion_type)),
@@ -132,7 +137,13 @@ def getsql(arr, conversion_type):
                        str(setobj(dict["quote"][contype]["market_cap"], conversion_type)),
                        str(setobj(dict["quote"][contype]["last_updated"], conversion_type))
                      ]
-        txtvals = ",".join(insertvlues)
+        fixedfieldlist =[]
+        for i in insertvlues:
+            if i != None:
+                fixedfieldlist.append(i)
+            else:
+                fixedfieldlist.append('null')
+        txtvals = ",".join(fixedfieldlist)
         # cntval = 0
         # for str in insertvlues:
         #     insertvlues += str
@@ -191,4 +202,6 @@ def load_cmc_data(cur, debugmode = 0):
 
 # test = execmngsql(3, 1)
 # print(test)
+txt = "2020-02-18T01:07:08.000Z"
 
+print(setobj(txt, 1))
