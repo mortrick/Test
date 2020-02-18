@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import datetime as dt
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
@@ -144,11 +146,6 @@ def getsql(arr, conversion_type):
             else:
                 fixedfieldlist.append('null')
         txtvals = ",".join(fixedfieldlist)
-        # cntval = 0
-        # for str in insertvlues:
-        #     insertvlues += str
-        #     if cntval != len(insertvlues):
-        #         insertvlues += ','
         rtoadd = insertrow + txtvals + ")"
         if len(arr) != islast_row:
             rtoadd += ',\n'
@@ -187,7 +184,7 @@ def load_cmc_data(cur, debugmode = 0):
     crpdata = fulldata["data"]
     # Prepare the insert sql statement
     sql = getsql(crpdata, curid)
-    if debugmode ==1:
+    if debugmode == 1:
         print(sql)
     mysql.qryexec(sql)
     print("Data successfully load to mysql")
@@ -202,6 +199,6 @@ def load_cmc_data(cur, debugmode = 0):
 
 # test = execmngsql(3, 1)
 # print(test)
-txt = "2020-02-18T01:07:08.000Z"
-
-print(setobj(txt, 1))
+# txt = "2020-02-18T01:07:08.000Z"
+#
+# print(setobj(txt, 1))

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import utils as cnf
 import mysqlactions as mysql
 
