@@ -184,7 +184,7 @@ def load_cmc_data(cur, debugmode = 0):
     # Prepare the insert sql statement
     sql = getsql(crpdata, curid)
     if debugmode == 1:
-        print(sql)
+        print("SQL Start here : "+sql)
     mysql.qryexec(sql)
     print("Data successfully load to mysql")
 
