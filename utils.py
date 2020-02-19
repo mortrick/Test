@@ -138,7 +138,8 @@ def getsql(arr, conversion_type, debugmode, run_id):
                        str(setobj(dict["quote"][contype]["percent_change_1h"], conversion_type)),
                        str(setobj(dict["quote"][contype]["percent_change_24h"], conversion_type)),
                        str(setobj(dict["quote"][contype]["market_cap"], conversion_type)),
-                       str(setobj(dict["quote"][contype]["last_updated"], conversion_type))
+                       str(setobj(dict["quote"][contype]["last_updated"], conversion_type)),
+                       str(run_id)
                      ]
         fixedfieldlist =[]
         for i in insertvlues:

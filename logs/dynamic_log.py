@@ -24,7 +24,6 @@ def logpath(runid):
 def writelog(logfile, msg,dubugmode =0 ):
     if dubugmode == 0:
         return None
-
     if os.path.exists(str(logfile)):
         with open(logfile, 'a') as f:
             f.write(msg)
