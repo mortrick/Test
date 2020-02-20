@@ -8,7 +8,6 @@ from logs import dynamic_log
 debugmode = 0
 run_id = cnf.getrunid_str()
 
-
 dist = ["USD", "BTC"]
 
 for i in dist:

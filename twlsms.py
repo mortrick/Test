@@ -5,8 +5,8 @@ import mysqlactions as mysql
 
 # Your Account Sid and Auth Token from twilio.com/console
 # DANGER! This is insecure. See http://twil.io/secure
-account_sid = 'ACb352b34e2bb687283c79e99d96034490'
-auth_token = '496d2ec9629ca1a251426cafb9fc88c2'
+account_sid = 'AC57752e2d163c71ea1ae87df429664134'
+auth_token = 'f4290498f1bf19666ffd5a9088d2113c'
 client = Client(account_sid, auth_token)
 
 
@@ -15,8 +15,8 @@ def sendsms(to,smstext):
     message = client.messages \
                     .create(
                          body=smstext,
-                         from_='+18317039336',
-                         to=+str(to)
+                         from_='+14696091694',
+                         to=str(to)
                  )
     print(message.sid, '\n', ' Message sent to ', str(to) )
 
@@ -44,9 +44,16 @@ def getsmsdetails(run_id, debugmode):
     return users_sms_session
 
 
-#
-# mobile = details[2]
-# msg = details[3]
 
-# mysql.qryexec(3, 0, run_id=3423, debugmode=0)  # Insert into sms Q
-print(getsmsdetails(run_id=455, debugmode=0))
+def sendsmstousers():
+    usersarrays = getsmsdetails(run_id=455, debugmode=0)
+    for userarr in usersarrays:
+        mobile = userarr[0]
+        smstxt = userarr[1]
+        sendsms(mobile, smstxt)
+
+
+
+
+# sendsms('+972547549039', 'test')
+sendsmstousers()
