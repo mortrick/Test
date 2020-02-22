@@ -178,3 +178,8 @@ def getrunid_str():
     mn = str(date.minute)
     timestamp = year + month + day + hr + mn
     return timestamp
+
+
+
+
+

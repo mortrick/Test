@@ -1,0 +1,1 @@
+sudo python3 /home/ubuntu/cryptoapi/Tracker/main.py prod
