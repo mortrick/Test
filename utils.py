@@ -7,7 +7,6 @@ import mysqlactions as mysql
 import platform
 from logs import dynamic_log as dl
 from keys import conf
-
 import twlsms as twl
 
 ### Authorized columns
@@ -40,10 +39,6 @@ def prms(cur):
             'convert': 'BTC'
         }
         return parameters
-
-
-
-
 
 
 def callcms(cur, run_id, debugmode):
@@ -150,24 +145,6 @@ def getsql(arr, conversion_type, debugmode, run_id):
     return sql
 
 
-
-# def execmngsql(query_id, is_return=0):
-#     sql = "select query_str from mng.environment_queries where query_id = " + str(query_id)
-#     execsql = cn.connect(sql, 1)[0]
-#     print("I Execute the query", execsql)
-#     if is_return == 0:
-#         cn.connect(execsql, is_return)
-#         return(execsql)
-#     else:
-#         isdata = cn.connect(sql, is_return)[0]
-#         data = cn.connect(isdata, is_return)[0]
-#         if not data:
-#             print("The query return no data")
-#             return 0
-#         else:
-#             print("Here are the results for the query")
-#             return data
-
 def load_cmc_data(cur, debugmode = 0,run_id = 0):
     # Download new data
     if cur == "USD":
@@ -189,19 +166,6 @@ def load_cmc_data(cur, debugmode = 0,run_id = 0):
 
 
 # Return only the sql to execute
-
-
-
-# twl.sendsms()
-# execmngsql(2, 0)
-# execmngsql(1, 0)
-
-# test = execmngsql(3, 1)
-# print(test)
-# txt = "2020-02-18T01:07:08.000Z"
-#
-# print(setobj(txt, 1))
-
 
 def getrunid_str():
     date = dt.datetime.now()
