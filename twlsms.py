@@ -1,4 +1,3 @@
-# Download the helper library from https://www.twilio.com/docs/python/install
 from twilio.rest import Client
 import mysqlactions as mysql
 from keys import conf
@@ -47,9 +46,3 @@ def sendsmstousers():
         mobile = userarr[0]
         smstxt = userarr[1]
         sendsms(mobile, smstxt)
-
-
-
-
-# sendsms('+972528281888', 'test')
-# sendsmstousers()
