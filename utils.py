@@ -6,7 +6,7 @@ import json
 import mysqlactions as mysql
 import platform
 from logs import dynamic_log as dl
-
+from keys import conf
 
 import twlsms as twl
 
@@ -41,12 +41,6 @@ def prms(cur):
         }
         return parameters
 
-def headers():
-    headers = {
-      'Accepts': 'application/json',
-      'X-CMC_PRO_API_KEY': '492b9d81-0f94-4449-90b1-3fe1ff9b29ff',
-    }
-    return headers
 
 
 
@@ -54,7 +48,7 @@ def headers():
 
 def callcms(cur, run_id, debugmode):
     session = Session()
-    session.headers.update(headers())
+    session.headers.update(conf.headers())
     try:
       response = session.get(returnurl(), params=prms(cur))
       data = json.loads(response.text)
