@@ -18,6 +18,11 @@ time.sleep(1)
 mysql.qryexec(1, 0, run_id=run_id, debugmode=debugmode)  # Truncate the hourly percentage table
 mysql.qryexec(2, 0, run_id=run_id, debugmode=debugmode)  # Insert into hourly percentage table
 mysql.qryexec(3, 0, run_id=run_id, debugmode=debugmode)  # Insert into sms Q
-mysql.qryexec(4, 0, run_id=run_id, debugmode=debugmode)  # Move to history
+mysql.qryexec(4, 0, run_id=run_id, debugmode=debugmode)  # Move to msg history
+mysql.qryexec(6, 0, run_id=run_id, debugmode=debugmode)  # Delete msg bulk
+mysql.qryexec(7, 0, run_id=run_id, debugmode=debugmode)  # Insert into mrrh
+mysql.qryexec(8, 0, run_id=run_id, debugmode=debugmode)  # Truncate mrr
+
+
 
 
