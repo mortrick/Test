@@ -24,19 +24,15 @@ else:
         # Before executing the other process, this step will validate we have new data
         assert str(session_rid_validation) == str(run_id)
         print("Validation check passed - The generated runid found in data ")
-        # Move to agg tables and operate the last execution data around the system
-        mysql.qryexec(2, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate the hourly percentage table
-        mysql.qryexec(3, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into hourly percentage table
-        mysql.qryexec(4, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into sms Q
-        mysql.qryexec(5, 0, run_id=run_id, debugmode=debugmode, env=env)  # Move to msg history
-        mysql.qryexec(6, 0, run_id=run_id, debugmode=debugmode, env=env)  # Delete msg bulk
-        mysql.qryexec(7, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into mrrh
-        mysql.qryexec(8, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate mrr
-    except:
+    except :
         print("The expected run_id didn't found in the data")
         twl.sendsms(conf.devdata()[0], conf.devdata()[1])
-
-
-
-
+        # Move to agg tables and operate the last execution data around the system
+        mysql.qryexec(2, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate the hourly percentage table
+        mysql.qryexec(3, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into track percentage table
+        mysql.qryexec(4, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into sms Q
+        mysql.qryexec(5, 0, run_id=run_id, debugmode=debugmode, env=env)  # Move to msg history
+        mysql.qryexec(7, 0, run_id=run_id, debugmode=debugmode, env=env)  # Delete msg bulk
+        mysql.qryexec(8, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into mrrh
+        mysql.qryexec(9, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate mrr
 
