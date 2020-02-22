@@ -1,14 +1,14 @@
 # Download the helper library from https://www.twilio.com/docs/python/install
 from twilio.rest import Client
 import mysqlactions as mysql
-
+from keys import conf
 
 # Your Account Sid and Auth Token from twilio.com/console
 # DANGER! This is insecure. See http://twil.io/secure
-account_sid = 'AC57752e2d163c71ea1ae87df429664134'
-auth_token = 'f4290498f1bf19666ffd5a9088d2113c'
-client = Client(account_sid, auth_token)
+# account_sid = 'AC57752e2d163c71ea1ae87df429664134'
+# auth_token = 'f4290498f1bf19666ffd5a9088d2113c'
 
+client = Client(conf.twlheaders())
 
 
 def sendsms(to,smstext):
@@ -55,5 +55,5 @@ def sendsmstousers():
 
 
 
-# sendsms('+972547549039', 'test')
-sendsmstousers()
+sendsms('+972547549039', 'test')
+# sendsmstousers()
