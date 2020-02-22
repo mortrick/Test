@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
 import datetime as dt
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
