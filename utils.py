@@ -100,8 +100,8 @@ def setobj(obj, conversiontype):
         return str("'" + obj.replace("'", "") + "'")
 
 
-def getsql(arr, conversion_type, debugmode, run_id):
-    if platform.system() == 'Windows':
+def getsql(arr, conversion_type, debugmode, run_id, env='test'):
+    if env == 'test':
         sql = "INSERT INTO mrr_test.fact_30_min_raw_data VALUES\n"
     else:
         sql = "INSERT INTO mrr.fact_30_min_raw_data VALUES\n"
@@ -145,7 +145,7 @@ def getsql(arr, conversion_type, debugmode, run_id):
     return sql
 
 
-def load_cmc_data(cur, debugmode = 0,run_id = 0):
+def load_cmc_data(cur, debugmode=0, run_id=0, env='test'):
     # Download new data
     if cur == "USD":
         curid = 1
@@ -158,10 +158,10 @@ def load_cmc_data(cur, debugmode = 0,run_id = 0):
     # Isolate only the relevant data
     crpdata = fulldata["data"]
     # Prepare the insert sql statement
-    sql = getsql(arr=crpdata, conversion_type= curid, run_id= run_id, debugmode=debugmode)
+    sql = getsql(arr=crpdata, conversion_type= curid, run_id= run_id, debugmode=debugmode, env=env)
     dl.writelog(dl.logpath(run_id), "\n Data fetched finished, prepareing the SQL" + '\n', debugmode)
     # Execute the sql
-    mysql.qryexec(numb=sql, retval=0, run_id=run_id, debugmode=debugmode)
+    mysql.qryexec(numb=sql, retval=0, run_id=run_id, debugmode=debugmode, env=env)
     dl.writelog(dl.logpath(run_id), "\n Data successfully inserted to aurora"  , debugmode)
 
 
@@ -171,6 +171,8 @@ def getrunid_str():
     date = dt.datetime.now()
     year = str(date.year)
     month = str(date.month)
+    if len(month) == 1:
+        month = '0' + str(month)
     day = str(date.day)
     hr = str(date.hour)
     mn = str(date.minute)
