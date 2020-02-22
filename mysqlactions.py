@@ -78,3 +78,10 @@ def qryexec(numb, retval=0, run_id=0, debugmode=0, env='test'):
         else:
             db.commit()
             db.close()
+
+
+def updateprocesslog(run_id=0, env='unknown', debugmode=0):
+    sql = 'insert into mng.process_execution_log (run_id, env,debug_mode)'
+    values = 'values ('+str(run_id)+',' + "'" +env + "'" +',' + str(debugmode) + ')'
+    finsql = sql + values
+    qryexec(numb=finsql, retval=0, run_id=run_id, debugmode=debugmode, env=env)

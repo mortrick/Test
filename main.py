@@ -12,12 +12,12 @@ run_id = cnf.getrunid_str()
 dist = ["USD", "BTC"]
 print("Runid is " + str(run_id))
 
-if len(sys.argv) < 2:
-    print("Please supply env")
+if 2 < len(sys.argv) < 2:
+    print("Please supply env expected to receive 1 env argument test or prod")
 else:
     for i in dist:
         cnf.load_cmc_data(i, debugmode=debugmode, run_id=run_id)
-    time.sleep(1)
+    time.sleep(3)
     # Check the inserted run_id in the database
     session_rid_validation = mysql.qryexec(numb=1, retval=1, run_id=run_id, debugmode=debugmode, env=env)[0]
     try:
@@ -26,13 +26,15 @@ else:
         print("Validation check passed - The generated runid found in data ")
     except :
         print("The expected run_id didn't found in the data")
-        twl.sendsms(conf.devdata()[0], conf.devdata()[1])
+        smsdata = conf.devdata(expected_run_id=run_id, foundrid=session_rid_validation)
+        twl.sendsms(to=smsdata[0], smstext=smsdata[1])
         # Move to agg tables and operate the last execution data around the system
-        mysql.qryexec(2, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate the hourly percentage table
-        mysql.qryexec(3, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into track percentage table
-        mysql.qryexec(4, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into sms Q
-        mysql.qryexec(5, 0, run_id=run_id, debugmode=debugmode, env=env)  # Move to msg history
-        mysql.qryexec(7, 0, run_id=run_id, debugmode=debugmode, env=env)  # Delete msg bulk
-        mysql.qryexec(8, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into mrrh
-        mysql.qryexec(9, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate mrr
+mysql.qryexec(2, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate the hourly percentage table
+mysql.qryexec(3, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into track percentage table
+mysql.qryexec(4, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into sms Q
+mysql.qryexec(5, 0, run_id=run_id, debugmode=debugmode, env=env)  # Move to msg history
+mysql.qryexec(7, 0, run_id=run_id, debugmode=debugmode, env=env)  # Delete msg bulk
+mysql.qryexec(8, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into mrrh
+mysql.qryexec(9, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate mrr
+mysql.updateprocesslog(run_id=run_id, env=env, debugmode=debugmode)
 

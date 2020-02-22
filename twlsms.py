@@ -17,11 +17,6 @@ def sendsms(to,smstext):
 
 
 
-# msg= "Good night friend, may the force be with the bit :) "
-# sendsms(547549039, msg)
-
-
-
 def getsmsdetails(run_id, debugmode):
     smsdetails = mysql.qryexec(5, retval=2, run_id=run_id, debugmode=debugmode)
     users_sms_session = []
