@@ -17,7 +17,7 @@ if 2 < len(sys.argv) < 2:
 else:
     for i in dist:
         cnf.load_cmc_data(i, debugmode=debugmode, run_id=run_id)
-    time.sleep(3)
+    time.sleep(5)
     # Check the inserted run_id in the database
     session_rid_validation = mysql.qryexec(numb=1, retval=1, run_id=run_id, debugmode=debugmode, env=env)[0]
     try:
@@ -35,6 +35,6 @@ mysql.qryexec(4, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into 
 mysql.qryexec(5, 0, run_id=run_id, debugmode=debugmode, env=env)  # Move to msg history
 mysql.qryexec(7, 0, run_id=run_id, debugmode=debugmode, env=env)  # Delete msg bulk
 mysql.qryexec(8, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into mrrh
-mysql.qryexec(9, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate mrr
+#mysql.qryexec(9, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate mrr
 mysql.updateprocesslog(run_id=run_id, env=env, debugmode=debugmode)
 
