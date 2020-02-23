@@ -7,12 +7,12 @@ import twlsms as twl
 from keys import conf
 
 env = sys.argv[1]
-debugmode = 0
+debugmode = sys.argv[2]
 run_id = cnf.getrunid_str()
 dist = ["USD", "BTC"]
 print("Runid is " + str(run_id))
 
-if 2 < len(sys.argv) < 2:
+if 3 < len(sys.argv) < 3:
     print("Please supply env expected to receive 1 env argument test or prod")
 else:
     for i in dist:
@@ -22,7 +22,7 @@ else:
     session_rid_validation = mysql.qryexec(numb=1, retval=1, run_id=run_id, debugmode=debugmode, env=env)[0]
     try:
         # Before executing the other process, this step will validate we have new data
-        assert str(session_rid_validation-2)  <= str(run_id)
+        assert str(session_rid_validation)  <= str(run_id)
         print("Validation check passed - The generated runid found in data ")
     except :
         smsdata = conf.devdata(expected_run_id=run_id, foundrid=session_rid_validation)
