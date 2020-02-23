@@ -1,1 +1,1 @@
-sudo python3 /home/ubuntu/cryptoapi/Tracker/main.py prod
+sudo python3 /home/ubuntu/cryptoapi/Tracker/main.py prod 0
