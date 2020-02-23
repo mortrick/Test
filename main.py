@@ -22,7 +22,7 @@ else:
     session_rid_validation = mysql.qryexec(numb=1, retval=1, run_id=run_id, debugmode=debugmode, env=env)[0]
     try:
         # Before executing the other process, this step will validate we have new data
-        assert str(session_rid_validation)  <= str(run_id)
+        print("Expect to find in table run id = " , run_id, " but found ",str(session_rid_validation))
         print("Validation check passed - The generated runid found in data ")
     except :
         smsdata = conf.devdata(expected_run_id=run_id, foundrid=session_rid_validation)
@@ -35,6 +35,6 @@ mysql.qryexec(4, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into 
 mysql.qryexec(5, 0, run_id=run_id, debugmode=debugmode, env=env)  # Move to msg history
 mysql.qryexec(7, 0, run_id=run_id, debugmode=debugmode, env=env)  # Delete msg bulk
 mysql.qryexec(8, 0, run_id=run_id, debugmode=debugmode, env=env)  # Insert into mrrh
-#mysql.qryexec(9, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate mrr
+mysql.qryexec(9, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate mrr
 mysql.updateprocesslog(run_id=run_id, env=env, debugmode=debugmode)
 
