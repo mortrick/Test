@@ -29,14 +29,14 @@ def prms(cur):
     if cur == 1:
         parameters = {
           'start': '1',
-          'limit': '5',
+          'limit': '5000',
           'convert': 'USD'
         }
         return parameters
     else:
         parameters = {
             'start': '1',
-            'limit': '5',
+            'limit': '5000',
             'convert': 'BTC'
         }
         return parameters
@@ -143,6 +143,7 @@ def getsql(arr, conversion_type, debugmode, run_id, env='test'):
             rtoadd += ',\n'
         sql += rtoadd
     dl.writelog(dl.logpath(run_id), "The sql prepared for insertion is :" + '\n' + sql[:1500] +'\n', debugmode)
+    print(str(islast_row) +" Rows retrieved from this response")
     return sql
 
 
