@@ -40,32 +40,32 @@ def qryexec(numb, retval=0, run_id=0, debugmode=0, env='test'):
             qry = getqrystr(numb, retval=1, env=env)
             cursor.execute(qry)
             # Add Debug
-            dl.writelog(dl.logpath(run_id), "Successfully execute the query :" + '\n' + qry, debugmode)
+            dl.writelog(dl.logpath(run_id), "Successfully execute the query :" + '\n' + qry[:1500], debugmode)
             ans = cursor.fetchone()
             db.close()
             # Add debug
-            dl.writelog(dl.logpath(run_id), "Successfully executed and the results are : " + '\n' + str(ans), debugmode)
+            dl.writelog(dl.logpath(run_id), "Successfully executed and the results are : " + '\n' + str(ans[:1500]), debugmode)
             return ans
         elif retval == 2:
             qry = getqrystr(numb, retval=2, env=env)
             cursor.execute(qry)
             ans = cursor.fetchall()
             db.close()
-            dl.writelog(dl.logpath(run_id), "Successfully executed and the results are : " + '\n' + str(ans), debugmode)
+            dl.writelog(dl.logpath(run_id), "Successfully executed and the results are : " + '\n' + str(ans[:1500]), debugmode)
             return ans
         else:
             qry = getqrystr(numb, retval=1, env=env) # mean
             cursor.execute(qry)
             db.commit()
             db.close()
-            dl.writelog(dl.logpath(run_id), "Successfully execute and commit the sql : " + '\n', debugmode)
+            dl.writelog(dl.logpath(run_id), "Successfully execute and commit the sql : " + '\n' + qry[:1500], debugmode)
     else:
         try:
             cursor.execute(numb)
-            dl.writelog(dl.logpath(run_id), 'The query bellow successfully executed \n' + numb, debugmode)
+            dl.writelog(dl.logpath(run_id), 'The query bellow successfully executed \n' + numb[:1500], debugmode)
         except pymysql.err as e :
             msg = "Couldnt execute the query " + 'Failed to execute the the sql ' + numb + '\n Because of an error ' + e
-            dl.writelog(dl.logpath(run_id), msg, debugmode)
+            dl.writelog(dl.logpath(run_id), msg[:1500], debugmode)
             print(msg)
         if retval == 1:
             ans = cursor.fetchone()

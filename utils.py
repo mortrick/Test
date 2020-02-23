@@ -142,7 +142,7 @@ def getsql(arr, conversion_type, debugmode, run_id, env='test'):
         if len(arr) != islast_row:
             rtoadd += ',\n'
         sql += rtoadd
-    dl.writelog(dl.logpath(run_id), "The sql prepared for insertion is :" + '\n' + sql +'\n', debugmode)
+    dl.writelog(dl.logpath(run_id), "The sql prepared for insertion is :" + '\n' + sql[:1500] +'\n', debugmode)
     return sql
 
 
