@@ -5,13 +5,8 @@ from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 import mysqlactions as mysql
-import platform
 from logs import dynamic_log as dl
 from keys import conf
-import twlsms as twl
-
-### Authorized columns
-
 
 
 def jsonfname ():
@@ -25,52 +20,36 @@ def returnurl():
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
     return url
 
-def prms(cur):
-    if cur == 1:
-        parameters = {
-          'start': '1',
-          'limit': '5000',
-          'convert': 'USD'
-        }
-        return parameters
-    else:
-        parameters = {
-            'start': '1',
-            'limit': '5000',
-            'convert': 'BTC'
-        }
-        return parameters
+def prms():
+    parameters = {
+      'start': '1',
+      'limit': '130',
+      'convert': 'USD,BTC'
+    }
+    return parameters
 
 
-def callcms(cur, run_id, debugmode):
+def callcms( run_id, debugmode, savejson=0):
     session = Session()
     session.headers.update(conf.headers())
     try:
-      response = session.get(returnurl(), params=prms(cur))
-      data = json.loads(response.text)
-      # with open(jsonfname(), "w") as temp_data:
-      #   temp_data.write(str(data))
-      dl.writelog(dl.logpath(run_id), "successfuly finished to retrieve data to the server, moving on to insert it to DB" + '\n', debugmode)
-      return (data)
+       response = session.get(returnurl(), params=prms())
+       data = json.loads(response.text)
+       if savejson == 1:
+          with open(jsonfname(), "w") as temp_data:
+               temp_data.write(str(data))
+               dl.writelog(dl.logpath(run_id),
+                           'successfuly finished !  Json available in unfflatten folder \n',
+                           debugmode)
+               return data
+       else:
+            dl.writelog(dl.logpath(run_id), "successfuly finished to retriev data to the server,moving on to insert it to DB \n" , debugmode)
+            return data
     except (ConnectionError, Timeout, TooManyRedirects) as e:
-        dl.writelog(dl.logpath(run_id), "Somthing went wrong with cmc API." + '\n', debugmode)
-        print(e)
+            dl.writelog(dl.logpath(run_id), "Somthing went wrong with cmc API." + '\n', debugmode)
+            print(e)
 
-
-# def dimscolumns():
-#     authcolumns = ["id", "name", "symbol", "tags", "max_supply", "circulating_supply", "total_supply", "cmc_rank"]
-#     return authcolumns
-#
-#
-# def quotecolumns():
-#     cols =["price", "volume_24h", "percent_change_1h", "percent_change_24h", "market_cap", "last_updated"]
-#     return cols
-
-def setobj(obj, conversiontype):
-    if conversiontype == 1:
-        rnd = 3
-    else:
-        rnd = 10
+def setobj(obj):
     if not obj:
         return str('null')
     if obj == 'None':
@@ -80,7 +59,7 @@ def setobj(obj, conversiontype):
     elif type(obj) == int:
         return str(obj)
     elif type(obj) == float:
-        newobj = round(obj, rnd)
+        newobj = round(obj, 9)
         return newobj
     elif type(obj) == str:
         if len(obj) >= 22:
@@ -101,37 +80,39 @@ def setobj(obj, conversiontype):
         return str("'" + obj.replace("'", "") + "'")
 
 
-def getsql(arr, conversion_type, debugmode, run_id, env='test'):
+def getsql(arr, debugmode, run_id=0, env='test'):
     if env == 'test':
-        sql = "INSERT INTO mrr_test.fact_30_min_raw_data VALUES\n"
+        sql = "INSERT INTO mrr_test.fact_20_min_raw_data VALUES\n"
     else:
-        sql = "INSERT INTO mrr.fact_30_min_raw_data VALUES\n"
-    if conversion_type == 1:
-        contype = "USD"
-    else:
-        contype = "BTC"
+        sql = "INSERT INTO mrr.fact_20_min_raw_data VALUES\n"
     islast_row = 0
-    for dict in arr:
+    for dict in arr :
         islast_row += 1
         insertrow = '('
-        insertvlues = [str(setobj(dict["id"], conversion_type)),
-                       str(conversion_type),
-                       str(setobj(dict["name"], conversion_type)),
-                       str(setobj(dict["symbol"], conversion_type)),
-                       str(setobj(dict["tags"], conversion_type)),
-                       str(setobj(dict["max_supply"], conversion_type)),
-                       str(setobj(dict["circulating_supply"], conversion_type)),
-                       str(setobj(dict["total_supply"], conversion_type)),
-                       str(setobj(dict["cmc_rank"], conversion_type)),
-                       str(setobj(dict["quote"][contype]["price"], conversion_type)),
-                       str(setobj(dict["quote"][contype]["volume_24h"], conversion_type)),
-                       str(setobj(dict["quote"][contype]["percent_change_1h"], conversion_type)),
-                       str(setobj(dict["quote"][contype]["percent_change_24h"], conversion_type)),
-                       str(setobj(dict["quote"][contype]["market_cap"], conversion_type)),
-                       str(setobj(dict["quote"][contype]["last_updated"], conversion_type)),
-                       str(run_id)
-                     ]
-        fixedfieldlist =[]
+        insertvlues = [str(run_id),
+                       str(setobj(dict["last_updated"])),
+                       str(setobj(dict["id"])),
+                       str(setobj(dict["name"])),
+                       str(setobj(dict["symbol"])),
+                       str(setobj(dict["tags"])),
+                       str(setobj(dict["max_supply"])),
+                       str(setobj(dict["circulating_supply"])),
+                       str(setobj(dict["total_supply"])),
+                       str(setobj(dict["cmc_rank"])),
+                       str(setobj(dict["quote"]["USD"]["price"])),
+                       str(setobj(dict["quote"]["BTC"]["price"])),
+                       str(setobj(dict["quote"]["USD"]["volume_24h"])),
+                       str(setobj(dict["quote"]["BTC"]["volume_24h"])),
+                       str(setobj(dict["quote"]["USD"]["percent_change_1h"])),
+                       str(setobj(dict["quote"]["BTC"]["percent_change_1h"])),
+                       str(setobj(dict["quote"]["USD"]["percent_change_24h"])),
+                       str(setobj(dict["quote"]["BTC"]["percent_change_24h"])),
+                       str(setobj(dict["quote"]["USD"]["percent_change_7d"])),
+                       str(setobj(dict["quote"]["BTC"]["percent_change_7d"])),
+                       str(setobj(dict["quote"]["USD"]["market_cap"])),
+                       str(setobj(dict["quote"]["BTC"]["market_cap"]))
+                       ]
+        fixedfieldlist = []
         for i in insertvlues:
             if i != None:
                 fixedfieldlist.append(i)
@@ -147,24 +128,20 @@ def getsql(arr, conversion_type, debugmode, run_id, env='test'):
     return sql
 
 
-def load_cmc_data(cur, debugmode=0, run_id=0, env='test'):
+def load_cmc_data( debugmode=0, run_id=0, env='test'):
     # Download new data
-    if cur == "USD":
-        curid = 1
-    else:
-        curid = 2
-    dl.writelog(dl.logpath(run_id), "\n Start fetching currencies " + cur + '\n', debugmode)
+    dl.writelog(dl.logpath(run_id), '\n Start fetching currencies \n', debugmode)
     # Call cmc func take currency id and return data
-    fulldata = callcms(curid, run_id=run_id, debugmode=debugmode)
+    fulldata = callcms( run_id=run_id, debugmode=debugmode)
     dl.writelog(dl.logpath(run_id), "\n Data fetched finished, prepareing the SQL" + '\n', debugmode)
     # Isolate only the relevant data
     crpdata = fulldata["data"]
     # Prepare the insert sql statement
-    sql = getsql(arr=crpdata, conversion_type= curid, run_id= run_id, debugmode=debugmode, env=env)
+    sql = getsql(arr=crpdata, run_id= run_id, debugmode=debugmode, env=env)
     dl.writelog(dl.logpath(run_id), "\n Data fetched finished, prepareing the SQL" + '\n', debugmode)
     # Execute the sql
     mysql.qryexec(numb=sql, retval=0, run_id=run_id, debugmode=debugmode, env=env)
-    dl.writelog(dl.logpath(run_id), "\n Data successfully inserted to aurora"  , debugmode)
+    dl.writelog(dl.logpath(run_id), "\n Data successfully inserted to aurora", debugmode)
 
 
 # Return only the sql to execute
