@@ -175,12 +175,13 @@ def getrunid_str():
     if len(month) == 1:
         month = '0' + str(month)
     day = str(date.day)
+    if len(day) ==1:
+        day = '0' + str(day)
     hr = str(date.hour)
+    if len(hr) ==1:
+        hr = '0'+str(hr)
     mn = str(date.minute)
+    if len(mn) == 1 :
+        mn = '0' +mn
     timestamp = year + month + day + hr + mn
     return timestamp
-
-
-
-
-

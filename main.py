@@ -25,8 +25,8 @@ else:
         assert str(session_rid_validation-2)  <= str(run_id)
         print("Validation check passed - The generated runid found in data ")
     except :
-        print("The expected run_id didn't found in the data")
         smsdata = conf.devdata(expected_run_id=run_id, foundrid=session_rid_validation)
+        print(smsdata[1])
         twl.sendsms(to=smsdata[0], smstext=smsdata[1])
         # Move to agg tables and operate the last execution data around the system
 mysql.qryexec(2, 0, run_id=run_id, debugmode=debugmode, env=env)  # Truncate the hourly percentage table
