@@ -129,22 +129,16 @@ def getsql(arr, debugmode, run_id=0, env='test'):
 
 
 def load_cmc_data( debugmode=0, run_id=0, env='test'):
-    # Download new data
     dl.writelog(dl.logpath(run_id), '\n Start fetching currencies \n', debugmode)
-    # Call cmc func take currency id and return data
     fulldata = callcms(run_id=run_id, debugmode=debugmode)
     dl.writelog(dl.logpath(run_id), "\n Data fetched finished, prepareing the SQL" + '\n', debugmode)
-    # Isolate only the relevant data
     crpdata = fulldata["data"]
-    # Prepare the insert sql statement
     sql = getsql(arr=crpdata, run_id= run_id, debugmode=debugmode, env=env)
     dl.writelog(dl.logpath(run_id), "\n Data fetched finished, prepareing the SQL" + '\n', debugmode)
-    # Execute the sql
     mysql.qryexec(numb=sql, retval=0, run_id=run_id, debugmode=debugmode, env=env)
     dl.writelog(dl.logpath(run_id), "\n Data successfully inserted to aurora", debugmode)
 
 
-# Return only the sql to execute
 
 def getrunid_str():
     date = dt.datetime.now()
