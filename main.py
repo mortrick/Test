@@ -17,7 +17,7 @@ success = 0
 if 3 < len(sys.argv) < 3:
     print("Please supply env expected to receive 1 env argument test or prod")
 else:
-    print("Start working on environment ", env," With debug mode ",debugmode)
+    print("Start working on environment ", env, " With debug mode ", debugmode)
     cnf.load_cmc_data(debugmode=debugmode, run_id=run_id, env=env)
     time.sleep(2)
     # Check the inserted run_id in the database
@@ -27,7 +27,7 @@ else:
         assert str(run_id) == str(session_rid_validation)
         print("Validation check passed - The generated runid found in data ")
         success = 1
-    except :
+    except:
         # Update the developer if
         smsdata = conf.devdata(expected_run_id=run_id, foundrid=session_rid_validation)
         print(smsdata[1])

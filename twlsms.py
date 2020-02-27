@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 from twilio.rest import Client
 import mysqlactions as mysql
 from keys import conf

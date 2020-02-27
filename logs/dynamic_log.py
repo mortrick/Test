@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 import platform
 from pathlib import Path
 import os.path

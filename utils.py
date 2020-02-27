@@ -132,7 +132,7 @@ def load_cmc_data( debugmode=0, run_id=0, env='test'):
     # Download new data
     dl.writelog(dl.logpath(run_id), '\n Start fetching currencies \n', debugmode)
     # Call cmc func take currency id and return data
-    fulldata = callcms( run_id=run_id, debugmode=debugmode)
+    fulldata = callcms(run_id=run_id, debugmode=debugmode)
     dl.writelog(dl.logpath(run_id), "\n Data fetched finished, prepareing the SQL" + '\n', debugmode)
     # Isolate only the relevant data
     crpdata = fulldata["data"]

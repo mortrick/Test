@@ -14,4 +14,3 @@ def logpath(runid):
         logdir = Path('~/cryptoapi/Tracker/logs/')
         path = logdir / filename
         return path
-

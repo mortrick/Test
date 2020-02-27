@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-# Connect to mysql with python
 import pymysql
 from logs import dynamic_log as dl
 from keys import conf
@@ -9,23 +8,24 @@ dbconf = conf.dbconf()
 
 def getqrystr(numb,  env='test'):
     if env != 'test':
-        sql = "select query_str from mng.environment_queries where query_id = " + str(numb) + " limit 1"
+        sql = "select query_str, query_name from mng.environment_queries where query_id = " + str(numb) + " limit 1"
     else:
-        sql = "select query_str from mng_test.environment_queries where query_id = " + str(numb) + " limit 1"
+        sql = "select query_str, query_name from mng_test.environment_queries where query_id = " + str(numb) + " limit 1"
     db = pymysql.connect(dbconf[0], dbconf[1], dbconf[2])
     cursor = db.cursor()
     cursor.execute(sql)
-    data = cursor.fetchone()
+    data = cursor.fetchall()
     for row in data:
-        qry = row
+        qry = row[0]
+        qry_name = row[1]
+    output = [qry, qry_name]
     if env == 'test':
-        qry = qry.replace("{env}", '_test')
+        output[0] = qry.replace("{env}", '_test')
         db.close()
-        return qry
+        return output
     else:
-        qry = qry.replace("{env}", '')
         db.close()
-        return qry
+        return output
 
 
 def qryexec(numb, retval=0, run_id=0, debugmode=0, env='test'):
@@ -35,24 +35,31 @@ def qryexec(numb, retval=0, run_id=0, debugmode=0, env='test'):
     cursor = db.cursor()
     if type(numb) == int:
         if retval == 1:
-            qry = getqrystr(numb,  env=env)
+            querydetails = getqrystr(numb,  env=env)
+            qry = querydetails[0]
+            qry_name = querydetails[1]
+            print("Next step - ", qry_name)
             cursor.execute(qry)
             # Add Debug
-            dl.writelog(dl.logpath(run_id), "Successfully execute the query :" + '\n' + qry[:1500], debugmode)
+            dl.writelog(dl.logpath(run_id), "Successfully execute the query :" + qry_name + '\n' + qry[:1500], debugmode)
             ans = cursor.fetchone()
             db.close()
             # Add debug
             dl.writelog(dl.logpath(run_id), "Successfully executed and the results are : " + '\n' + str(ans[:1500]), debugmode)
             return ans
         elif retval == 2:
-            qry = getqrystr(numb,  env=env)
+            qry = getqrystr(numb,  env=env)[0]
+            qry_name = getqrystr(numb, env=env)[1]
+            print("Next step - ", qry_name)
             cursor.execute(qry)
             ans = cursor.fetchall()
             db.close()
             dl.writelog(dl.logpath(run_id), "Successfully executed and the results are : " + '\n' + str(ans[:1500]), debugmode)
             return ans
         else:
-            qry = getqrystr(numb,  env=env) # mean
+            qry = getqrystr(numb,  env=env)[0]
+            qry_name = getqrystr(numb, env=env)[1]
+            print("Next step - ", qry_name)
             cursor.execute(qry)
             db.commit()
             db.close()
