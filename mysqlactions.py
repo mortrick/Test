@@ -6,7 +6,10 @@ from keys import conf
 dbconf = conf.dbconf()
 
 def getqrystr(numb, retval=1, env='test'):
-    sql = "select query_str from mng.environment_queries where query_id = " + str(numb) + " limit 1"
+    if env != 'test':
+        sql = "select query_str from mng.environment_queries where query_id = " + str(numb) + " limit 1"
+    else:
+        sql = "select query_str from mng_test.environment_queries where query_id = " + str(numb) + " limit 1"
     db = pymysql.connect(dbconf[0], dbconf[1], dbconf[2])
     cursor = db.cursor()
     cursor.execute(sql)
@@ -25,7 +28,10 @@ def getqrystr(numb, retval=1, env='test'):
     else:
         data = cursor.fetchall()
         for row in data:
-            txt = row
+            if type(row) == tuple:
+                txt = row[0]
+            else:
+                txt = row
             db.close()
             return txt
 
