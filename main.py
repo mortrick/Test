@@ -17,6 +17,7 @@ success = 0
 if 3 < len(sys.argv) < 3:
     print("Please supply env expected to receive 1 env argument test or prod")
 else:
+    print("Start working on environment ", env," With debug mode ",debugmode)
     cnf.load_cmc_data(debugmode=debugmode, run_id=run_id, env=env)
     time.sleep(2)
     # Check the inserted run_id in the database
