@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Connect to mysql with python
 import pymysql
 from logs import dynamic_log as dl
