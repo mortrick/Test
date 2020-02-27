@@ -20,20 +20,30 @@ def returnurl():
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
     return url
 
-def prms():
-    parameters = {
-      'start': '1',
-      'limit': '130',
-      'convert': 'USD,BTC'
-    }
+
+def prms(env='test'):
+    if env == 'test':
+        parameters = {
+          'start': '1',
+          'limit': '130',
+          'convert': 'USD,BTC'
+        }
+    else:
+        parameters = {
+            'start' : '1',
+            'limit' : '400',
+            'convert' : 'USD,BTC'
+        }
     return parameters
 
 
-def callcms( run_id, debugmode, savejson=0):
+
+
+def callcms( run_id, debugmode, savejson=0, env='test'):
     session = Session()
     session.headers.update(conf.headers())
     try:
-       response = session.get(returnurl(), params=prms())
+       response = session.get(returnurl(), params=prms(env=env))
        data = json.loads(response.text)
        if savejson == 1:
           with open(jsonfname(), "w") as temp_data:
@@ -130,7 +140,7 @@ def getsql(arr, debugmode, run_id=0, env='test'):
 
 def load_cmc_data( debugmode=0, run_id=0, env='test'):
     dl.writelog(dl.logpath(run_id), '\n Start fetching currencies \n', debugmode)
-    fulldata = callcms(run_id=run_id, debugmode=debugmode)
+    fulldata = callcms(run_id=run_id, debugmode=debugmode, env=env)
     dl.writelog(dl.logpath(run_id), "\n Data fetched finished, prepareing the SQL" + '\n', debugmode)
     crpdata = fulldata["data"]
     sql = getsql(arr=crpdata, run_id= run_id, debugmode=debugmode, env=env)
@@ -147,13 +157,13 @@ def getrunid_str():
     if len(month) == 1:
         month = '0' + str(month)
     day = str(date.day)
-    if len(day) ==1:
+    if len(day) == 1:
         day = '0' + str(day)
     hr = str(date.hour)
-    if len(hr) ==1:
+    if len(hr) == 1:
         hr = '0'+str(hr)
     mn = str(date.minute)
-    if len(mn) == 1 :
+    if len(mn) == 1:
         mn = '0' +mn
     timestamp = year + month + day + hr + mn
     return timestamp

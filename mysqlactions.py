@@ -65,13 +65,8 @@ def qryexec(numb, retval=0, run_id=0, debugmode=0, env='test'):
             db.close()
             dl.writelog(dl.logpath(run_id), "Successfully execute and commit the sql : " + '\n' + qry[:1500], debugmode)
     else:
-        try:
-            cursor.execute(numb)
-            dl.writelog(dl.logpath(run_id), 'The query bellow successfully executed \n' + numb[:1500], debugmode)
-        except pymysql.err as e :
-            msg = "Couldnt execute the query " + 'Failed to execute the the sql ' + numb + '\n Because of an error ' + e
-            dl.writelog(dl.logpath(run_id), msg[:1500], debugmode)
-            print(msg)
+        cursor.execute(numb)
+        dl.writelog(dl.logpath(run_id), 'The query bellow successfully executed \n' + numb[:1500], debugmode)
         if retval == 1:
             ans = cursor.fetchone()
             db.close()
