@@ -48,8 +48,9 @@ def qryexec(numb, retval=0, run_id=0, debugmode=0, env='test'):
             dl.writelog(dl.logpath(run_id), "Successfully executed and the results are : " + '\n' + str(ans[:1500]), debugmode)
             return ans
         elif retval == 2:
-            qry = getqrystr(numb,  env=env)[0]
-            qry_name = getqrystr(numb, env=env)[1]
+            querydetails = getqrystr(numb, env=env)
+            qry = querydetails[0]
+            qry_name = querydetails[1]
             print("Next step - ", qry_name)
             cursor.execute(qry)
             ans = cursor.fetchall()
@@ -57,8 +58,9 @@ def qryexec(numb, retval=0, run_id=0, debugmode=0, env='test'):
             dl.writelog(dl.logpath(run_id), "Successfully executed and the results are : " + '\n' + str(ans[:1500]), debugmode)
             return ans
         else:
-            qry = getqrystr(numb,  env=env)[0]
-            qry_name = getqrystr(numb, env=env)[1]
+            querydetails = getqrystr(numb,  env=env)
+            qry = querydetails[0]
+            qry_name = querydetails[1]
             print("Next step - ", qry_name)
             cursor.execute(qry)
             db.commit()
